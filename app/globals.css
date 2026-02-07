@@ -4,48 +4,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 99%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 99%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 99%;
+    --primary: 0 0% 99%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 228 6% 10%;
+    --secondary-foreground: 0 0% 99%;
+    --muted: 228 6% 10%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 228 6% 10%;
+    --accent-foreground: 0 0% 99%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 99%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 99%;
+    --radius: 0.5rem;
   }
 
   * {
@@ -57,103 +35,146 @@
   }
 }
 
-/* Auth page animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-20px) rotate(2deg); }
-  66% { transform: translateY(10px) rotate(-1deg); }
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(30px); }
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.animate-in {
+  animation: fade-in 0.6s ease-out forwards;
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.animate-in-delay-1 {
+  animation: fade-in 0.6s ease-out 0.1s forwards;
+  opacity: 0;
 }
 
-.animate-float { animation: float 8s ease-in-out infinite; }
-.animate-float-delayed { animation: float 8s ease-in-out 2s infinite; }
-.animate-float-slow { animation: float 12s ease-in-out 1s infinite; }
-.animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
-.animate-slide-up { animation: slide-up 0.8s ease-out forwards; }
-.animate-fade-in { animation: fade-in 1s ease-out forwards; }
-.animate-gradient { animation: gradient-shift 8s ease infinite; background-size: 200% 200%; }
+.animate-in-delay-2 {
+  animation: fade-in 0.6s ease-out 0.2s forwards;
+  opacity: 0;
+}
 
-/* Clerk form styling overrides */
+/* Clerk — dark minimal overrides */
 .cl-card {
   background: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-.cl-headerTitle {
-  font-size: 1.75rem !important;
-  font-weight: 700 !important;
-}
-
+.cl-headerTitle,
 .cl-headerSubtitle {
-  color: hsl(var(--muted-foreground)) !important;
+  display: none !important;
 }
 
 .cl-formButtonPrimary {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7) !important;
+  background: #FDFDFD !important;
+  color: #000000 !important;
   border: none !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.025em !important;
-  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  letter-spacing: -0.01em !important;
+  transition: opacity 0.15s ease !important;
 }
 
 .cl-formButtonPrimary:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4) !important;
+  opacity: 0.85 !important;
 }
 
 .cl-formFieldInput {
-  border-radius: 0.75rem !important;
-  border: 1px solid hsl(var(--border)) !important;
-  background: hsl(var(--background)) !important;
-  transition: all 0.2s ease !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  color: #FDFDFD !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  transition: border-color 0.15s ease !important;
 }
 
 .cl-formFieldInput:focus {
-  border-color: #8b5cf6 !important;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: none !important;
+}
+
+.cl-formFieldInput::placeholder {
+  color: rgba(253, 254, 255, 0.3) !important;
+}
+
+.cl-formFieldLabel {
+  color: rgba(253, 254, 255, 0.65) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
 }
 
 .cl-footerActionLink {
-  color: #8b5cf6 !important;
-  font-weight: 500 !important;
+  color: #FDFDFD !important;
+  font-weight: 400 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  text-decoration-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.cl-footerActionLink:hover {
+  text-decoration-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.cl-footerActionText {
+  color: rgba(253, 254, 255, 0.4) !important;
 }
 
 .cl-socialButtonsBlockButton {
-  border-radius: 0.75rem !important;
-  border: 1px solid hsl(var(--border)) !important;
-  transition: all 0.2s ease !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  color: #FDFDFD !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  transition: border-color 0.15s ease !important;
 }
 
 .cl-socialButtonsBlockButton:hover {
-  background: hsl(var(--accent)) !important;
-  transform: translateY(-1px) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
 }
 
 .cl-dividerLine {
-  background: hsl(var(--border)) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.cl-dividerText {
+  color: rgba(253, 254, 255, 0.3) !important;
+  font-size: 12px !important;
+}
+
+.cl-formFieldInputShowPasswordButton {
+  color: rgba(253, 254, 255, 0.4) !important;
+}
+
+.cl-formFieldAction {
+  color: rgba(253, 254, 255, 0.4) !important;
+  font-size: 13px !important;
+}
+
+.cl-identityPreviewEditButton {
+  color: rgba(253, 254, 255, 0.5) !important;
+}
+
+.cl-otpCodeFieldInput {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #FDFDFD !important;
+}
+
+.cl-formResendCodeLink {
+  color: rgba(253, 254, 255, 0.5) !important;
+}
+
+.cl-footer {
+  background: transparent !important;
 }
 
 .cl-internal-b3fm6y {
-  color: hsl(var(--muted-foreground)) !important;
+  color: rgba(253, 254, 255, 0.3) !important;
 }

@@ -3,31 +3,31 @@ import { SignIn } from '@clerk/nextjs'
 export default function SignInPage() {
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold tracking-tight">Bienvenido de vuelta</h2>
-        <p className="text-muted-foreground mt-2">
-          Inicia sesión para continuar con tu equipo
+      <div className="mb-8">
+        <h1
+          className="text-[28px] font-medium tracking-[-0.04em] text-[#FDFDFD] leading-tight"
+          style={{
+            background: 'linear-gradient(97deg, #ffffff 30%, rgba(255,255,255,0.50) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Welcome back
+        </h1>
+        <p className="text-[14px] text-white/40 mt-2 tracking-[-0.01em]">
+          Sign in to continue
         </p>
       </div>
       <SignIn
         appearance={{
           elements: {
             rootBox: 'w-full',
-            card: 'shadow-none p-0 w-full',
-            headerTitle: 'hidden',
-            headerSubtitle: 'hidden',
-            socialButtonsBlockButton:
-              'border border-border rounded-xl h-11 font-medium',
-            formButtonPrimary:
-              'h-11 rounded-xl text-sm font-semibold',
-            formFieldInput:
-              'h-11 rounded-xl border-border bg-background',
-            formFieldLabel: 'text-sm font-medium text-foreground',
-            footerAction: 'mt-4',
-            footerActionLink: 'font-semibold',
-            dividerLine: 'bg-border',
-            dividerText: 'text-muted-foreground text-xs',
-            identityPreviewEditButton: 'text-violet-500',
+            card: 'shadow-none p-0 w-full bg-transparent',
+            socialButtonsBlockButton: 'h-10 text-[14px]',
+            formButtonPrimary: 'h-10 text-[14px]',
+            formFieldInput: 'h-10 text-[14px]',
+            formFieldLabel: 'text-[13px]',
+            footerAction: 'mt-6',
           },
         }}
       />
