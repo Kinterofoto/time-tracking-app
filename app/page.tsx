@@ -11,6 +11,12 @@ export default function LandingPage() {
             <span className="text-sm font-medium tracking-tight">TimeFlow</span>
             <div className="flex items-center gap-8">
               <Link
+                href="/time-clock"
+                className="text-sm text-white/60 hover:text-white transition-colors"
+              >
+                Time Clock
+              </Link>
+              <Link
                 href="/sign-in"
                 className="text-sm text-white/60 hover:text-white transition-colors"
               >
