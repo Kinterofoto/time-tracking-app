@@ -9,6 +9,7 @@ interface ActionButtonProps {
   description: string
   variant: "primary" | "warning" | "info" | "danger"
   onClick: () => void
+  disabled?: boolean
 }
 
 const variantStyles = {
@@ -40,6 +41,7 @@ export function ActionButton({
   description,
   variant,
   onClick,
+  disabled = false,
 }: ActionButtonProps) {
   const styles = variantStyles[variant]
 
@@ -50,11 +52,13 @@ export function ActionButton({
         "shadow-lg focus-visible:outline-none focus-visible:ring-2",
         styles.bg,
         styles.shadow,
-        styles.ring
+        styles.ring,
+        disabled && "opacity-50 cursor-not-allowed"
       )}
       onClick={onClick}
-      whileHover={{ scale: 1.03, y: -2 }}
-      whileTap={{ scale: 0.97 }}
+      disabled={disabled}
+      whileHover={disabled ? {} : { scale: 1.03, y: -2 }}
+      whileTap={disabled ? {} : { scale: 0.97 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
