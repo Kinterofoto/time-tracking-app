@@ -1,6 +1,6 @@
 "use client"
 
-import dynamic from "next/dynamic"
+import { ClerkProvider } from "@clerk/nextjs"
 import type { ReactNode } from "react"
 
 const hasClerkKey =
@@ -8,21 +8,9 @@ const hasClerkKey =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.length > 5 &&
   !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("placeholder")
 
-const ClerkProviderLazy = hasClerkKey
-  ? dynamic(
-      () =>
-        import("@clerk/nextjs").then(({ ClerkProvider }) => {
-          return function ClerkWrapper({ children }: { children: ReactNode }) {
-            return <ClerkProvider>{children}</ClerkProvider>
-          }
-        }),
-      { ssr: true }
-    )
-  : null
-
 export function ClerkProviderWrapper({ children }: { children: ReactNode }) {
-  if (!ClerkProviderLazy) {
+  if (!hasClerkKey) {
     return <>{children}</>
   }
-  return <ClerkProviderLazy>{children}</ClerkProviderLazy>
+  return <ClerkProvider>{children}</ClerkProvider>
 }
