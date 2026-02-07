@@ -5,11 +5,12 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "TimeFlow - Smart Employee Time Tracking",
-  description: "Modern time tracking with facial recognition. Track employee hours effortlessly and accurately.",
+  title: "TimeFlow — Smart employee time tracking",
+  description: "Facial recognition time tracking. Automatic, accurate, and effortless.",
 };
 
 export default function RootLayout({
@@ -18,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
-      <body className="antialiased">
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans antialiased bg-black text-white">
         {children}
       </body>
     </html>
