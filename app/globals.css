@@ -24,6 +24,7 @@
     --input: 0 0% 12%;
     --ring: 0 0% 99%;
     --radius: 0.5rem;
+    --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
   }
 
   * {
@@ -32,6 +33,13 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    font-family: var(--font-inter);
   }
 }
 

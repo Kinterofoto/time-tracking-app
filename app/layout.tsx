@@ -6,6 +6,7 @@ import './globals.css'
 
 const inter = Inter({
   subsets: ['latin'],
+  display: 'swap',
   variable: '--font-inter',
 })
 
@@ -16,9 +17,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <ClerkProvider
       appearance={{
@@ -26,7 +27,9 @@ export default function RootLayout({
       }}
     >
       <html lang="en" className={`${inter.variable} dark`}>
-        <body className="font-inter">{children}</body>
+        <body className="font-inter antialiased bg-black text-white">
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   )
