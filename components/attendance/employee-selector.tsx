@@ -1,6 +1,8 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { getEmployees } from "@/lib/data/attendance"
 
 interface Employee {
   id: string
@@ -8,27 +10,57 @@ interface Employee {
   avatar: string
 }
 
-const mockEmployees: Employee[] = [
-  { id: "1", name: "María García", avatar: "MG" },
-  { id: "2", name: "Carlos Rodríguez", avatar: "CR" },
-  { id: "3", name: "Ana Martínez", avatar: "AM" },
-  { id: "4", name: "Luis Hernández", avatar: "LH" },
-  { id: "5", name: "Sofia López", avatar: "SL" },
-  { id: "6", name: "Diego Torres", avatar: "DT" },
-]
-
 interface EmployeeSelectorProps {
   onSelect: (employee: Employee) => void
 }
 
 export function EmployeeSelector({ onSelect }: EmployeeSelectorProps) {
+  const [employees, setEmployees] = useState<Employee[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadEmployees() {
+      try {
+        const dbEmployees = await getEmployees()
+        const formattedEmployees: Employee[] = dbEmployees
+          .filter((emp) => emp.status === "active")
+          .map((emp) => {
+            const initials =
+              emp.first_name.charAt(0) + emp.last_name.charAt(0)
+            return {
+              id: emp.id,
+              name: `${emp.first_name} ${emp.last_name}`,
+              avatar: initials.toUpperCase(),
+            }
+          })
+        setEmployees(formattedEmployees)
+      } catch (error) {
+        console.error("Error loading employees:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadEmployees()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-2xl">
+        <h2 className="mb-6 text-center text-2xl font-bold text-foreground">
+          Cargando empleados...
+        </h2>
+      </div>
+    )
+  }
+
   return (
     <div className="w-full max-w-2xl">
       <h2 className="mb-6 text-center text-2xl font-bold text-foreground">
         Selecciona tu perfil
       </h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {mockEmployees.map((employee, index) => (
+        {employees.map((employee, index) => (
           <motion.button
             key={employee.id}
             className="group flex flex-col items-center gap-3 rounded-2xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/50 hover:bg-card"

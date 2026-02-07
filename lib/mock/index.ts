@@ -8,6 +8,9 @@ import type {
   EmployeeStatus,
 } from "@/lib/types"
 
+// Re-export mock data
+export { mockEmployees, mockAttendance, mockBreaks }
+
 export function getMockDashboardData(): {
   summary: DashboardSummary
   employees: EmployeeDayView[]

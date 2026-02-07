@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { LiveClock } from "./live-clock"
 import { StatusBadge, type EmployeeStatus } from "./status-badge"
@@ -8,6 +8,13 @@ import { ActionButton } from "./action-button"
 import { GreetingOverlay, type GreetingType } from "./greeting-overlay"
 import { TimeLog, type TimeEntry } from "./time-log"
 import { EmployeeSelector, type Employee } from "./employee-selector"
+import {
+  getEmployeeCurrentStatus,
+  recordCheckIn,
+  recordCheckOut,
+  startBreak,
+  endBreak,
+} from "@/lib/data/attendance"
 
 export function TimeClock() {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
@@ -17,6 +24,41 @@ export function TimeClock() {
     visible: boolean
   }>({ type: "check-in", visible: false })
   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([])
+  const [attendanceId, setAttendanceId] = useState<string | null>(null)
+  const [activeBreakId, setActiveBreakId] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  // Load employee status when selected
+  useEffect(() => {
+    if (!selectedEmployee) return
+
+    const employeeId = selectedEmployee.id
+
+    async function loadEmployeeStatus() {
+      setIsLoading(true)
+      try {
+        const currentStatus = await getEmployeeCurrentStatus(employeeId)
+
+        setStatus(currentStatus.status)
+        setAttendanceId(currentStatus.attendanceRecord?.id || null)
+        setActiveBreakId(currentStatus.activeBreak?.id || null)
+
+        // Convert stored entries to TimeEntry format
+        const entries: TimeEntry[] = currentStatus.timeEntries.map((entry) => ({
+          id: entry.id,
+          type: entry.type,
+          timestamp: entry.timestamp,
+        }))
+        setTimeEntries(entries)
+      } catch (error) {
+        console.error("Error loading employee status:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadEmployeeStatus()
+  }, [selectedEmployee])
 
   const addEntry = useCallback((type: GreetingType) => {
     const entry: TimeEntry = {
@@ -28,26 +70,53 @@ export function TimeClock() {
   }, [])
 
   const showGreeting = useCallback(
-    (type: GreetingType) => {
+    async (type: GreetingType) => {
+      if (!selectedEmployee) return
+
       setGreeting({ type, visible: true })
       addEntry(type)
 
-      switch (type) {
-        case "check-in":
-          setStatus("working")
-          break
-        case "break-start":
-          setStatus("on-break")
-          break
-        case "break-end":
-          setStatus("working")
-          break
-        case "check-out":
-          setStatus("not-checked-in")
-          break
+      try {
+        switch (type) {
+          case "check-in":
+            await recordCheckIn(selectedEmployee.id)
+            // Reload to get the new attendance ID
+            const checkInStatus = await getEmployeeCurrentStatus(selectedEmployee.id)
+            setAttendanceId(checkInStatus.attendanceRecord?.id || null)
+            setStatus("working")
+            break
+
+          case "break-start":
+            if (attendanceId) {
+              await startBreak(attendanceId, selectedEmployee.id)
+              // Reload to get the active break ID
+              const breakStartStatus = await getEmployeeCurrentStatus(selectedEmployee.id)
+              setActiveBreakId(breakStartStatus.activeBreak?.id || null)
+            }
+            setStatus("on-break")
+            break
+
+          case "break-end":
+            if (activeBreakId) {
+              await endBreak(activeBreakId)
+              setActiveBreakId(null)
+            }
+            setStatus("working")
+            break
+
+          case "check-out":
+            if (attendanceId) {
+              await recordCheckOut(attendanceId)
+              setAttendanceId(null)
+            }
+            setStatus("not-checked-in")
+            break
+        }
+      } catch (error) {
+        console.error("Error recording attendance action:", error)
       }
     },
-    [addEntry]
+    [addEntry, selectedEmployee, attendanceId, activeBreakId]
   )
 
   const handleCloseGreeting = useCallback(() => {
@@ -141,7 +210,8 @@ export function TimeClock() {
                     emoji="🚀"
                     description="Comienza tu jornada laboral"
                     variant="primary"
-                    onClick={() => showGreeting("check-in")}
+                    onClick={() => void showGreeting("check-in")}
+                    disabled={isLoading}
                   />
                 )}
 
@@ -153,7 +223,8 @@ export function TimeClock() {
                       emoji="☕"
                       description="Relájate un momento"
                       variant="warning"
-                      onClick={() => showGreeting("break-start")}
+                      onClick={() => void showGreeting("break-start")}
+                      disabled={isLoading}
                     />
                     <ActionButton
                       key="check-out"
@@ -161,7 +232,8 @@ export function TimeClock() {
                       emoji="👋"
                       description="Termina tu jornada"
                       variant="danger"
-                      onClick={() => showGreeting("check-out")}
+                      onClick={() => void showGreeting("check-out")}
+                      disabled={isLoading}
                     />
                   </>
                 )}
@@ -173,7 +245,8 @@ export function TimeClock() {
                     emoji="💪"
                     description="Regresa con toda la energía"
                     variant="info"
-                    onClick={() => showGreeting("break-end")}
+                    onClick={() => void showGreeting("break-end")}
+                    disabled={isLoading}
                   />
                 )}
               </AnimatePresence>
