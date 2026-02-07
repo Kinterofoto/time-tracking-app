@@ -4,9 +4,13 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function LandingPage() {
-  const { userId } = await auth();
-
-  if (userId) {
+  try {
+    const { userId } = await auth();
+    if (userId) {
+      redirect("/dashboard");
+    }
+  } catch {
+    // Clerk not configured — redirect to dashboard directly
     redirect("/dashboard");
   }
 
@@ -16,7 +20,7 @@ export default async function LandingPage() {
       <nav className="border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <span className="text-sm font-medium tracking-tight">Tripoli</span>
+            <span className="text-sm font-medium tracking-tight">Damascus</span>
             <div className="flex items-center gap-8">
               <Link
                 href="/time-clock"
@@ -156,7 +160,7 @@ export default async function LandingPage() {
             Ready to simplify time control?
           </h2>
           <p className="text-lg text-white/60 mb-12">
-            Join companies that already trust Tripoli to manage their teams.
+            Join companies that already trust Damascus to manage their teams.
           </p>
           <Link
             href="/sign-up"
@@ -175,8 +179,8 @@ export default async function LandingPage() {
       <footer className="border-t border-white/10 px-6 lg:px-8 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <span className="text-sm text-white/40">Tripoli</span>
-            <p className="text-sm text-white/40">&copy; 2026 Tripoli. All rights reserved.</p>
+            <span className="text-sm text-white/40">Damascus</span>
+            <p className="text-sm text-white/40">&copy; 2026 Damascus. All rights reserved.</p>
             <div className="flex gap-8 text-sm text-white/40">
               <a href="#" className="hover:text-white transition-colors">Privacy</a>
               <a href="#" className="hover:text-white transition-colors">Terms</a>

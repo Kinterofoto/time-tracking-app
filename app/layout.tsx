@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
-import { ClerkProvider } from '@clerk/nextjs'
-import { dark } from '@clerk/themes'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next"
+import { ClerkProviderWrapper } from "@/components/providers/clerk-provider-wrapper"
+import { ThemeProvider } from "@/components/providers/theme-provider"
+import { Inter } from "next/font/google"
+import "./globals.css"
 
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 })
 
 export const metadata: Metadata = {
-  title: 'Tripoli',
-  description: 'Time tracking with facial recognition',
+  title: "Damascus - Control de Tiempo",
+  description: "Time tracking with facial recognition",
 }
 
 export default function RootLayout({
@@ -21,16 +21,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark,
-      }}
-    >
-      <html lang="en" className={`${inter.variable} dark`}>
-        <body className="min-h-screen font-sans antialiased bg-background text-foreground">
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="es" className={`${inter.variable} dark`} suppressHydrationWarning>
+      <body className="min-h-screen font-sans antialiased bg-background text-foreground">
+        <ClerkProviderWrapper>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ClerkProviderWrapper>
+      </body>
+    </html>
   )
 }
