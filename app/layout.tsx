@@ -27,7 +27,7 @@ export default function RootLayout({
       }}
     >
       <html lang="en" className={`${inter.variable} dark`}>
-        <body className="font-inter antialiased bg-black text-white">
+        <body className="min-h-screen font-sans antialiased bg-background text-foreground">
           {children}
         </body>
       </html>
