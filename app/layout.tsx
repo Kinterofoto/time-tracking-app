@@ -1,28 +1,36 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
+import { Inter } from 'next/font/google'
+import './globals.css'
 
 const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
-  title: "TimeFlow — Smart employee time tracking",
-  description: "Facial recognition time tracking. Automatic, accurate, and effortless.",
-};
+  title: 'Tripoli',
+  description: 'Time tracking with facial recognition',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen font-sans antialiased bg-background text-foreground">
-        {children}
-      </body>
-    </html>
-  );
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang="en" className={`${inter.variable} dark`}>
+        <body className="min-h-screen font-sans antialiased bg-background text-foreground">
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }
