@@ -10,7 +10,12 @@ const hasClerkKey =
 
 const ClerkProviderLazy = hasClerkKey
   ? dynamic(
-      () => import("@clerk/nextjs").then((mod) => mod.ClerkProvider),
+      () =>
+        import("@clerk/nextjs").then(({ ClerkProvider }) => {
+          return function ClerkWrapper({ children }: { children: ReactNode }) {
+            return <ClerkProvider>{children}</ClerkProvider>
+          }
+        }),
       { ssr: true }
     )
   : null
